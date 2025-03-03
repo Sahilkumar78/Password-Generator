@@ -1,21 +1,20 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 
 
-
 function App() {
   const [length, setLength] = useState(8);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
-     const [password, setPassword] = useState("")
+     const [password, setPassword] = useState("");
      
-    //useRef hook
+ //useRef hook
      const passwordRef = useRef(null)
 
-     const passwordGenerator = useCallback(() =>{
-       let pass = ""
-       let str = "ABCDEFGHIKLMNOPQRSTVXYZabcdefghijklmnopqrstuvwxyz"
-        if(numberAllowed) str+="0123456789"
-        if(charAllowed) str +="!@#$%^&*()_+=<>,.?/\|~`"
+     const passwordGenerator = useCallback(() =>{  // hook-> useCallback
+       let pass = "";
+       let str = "ABCDEFGHIKLMNOPQRSTVXYZabcdefghijklmnopqrstuvwxyz";
+        if(numberAllowed) str +="0123456789";
+        if(charAllowed) str +="!@#$%^&*()_+=<>,.?/\|~`";
          
         for(let i=1; i<=length; i++){
            let char = Math.floor(Math.random() * str.length + 1) // gave idx
@@ -28,17 +27,17 @@ function App() {
     
      const copyPasswordtoClipboard = useCallback(() =>{
        passwordRef.current?.select();
-       passwordRef.current?.setSelectionRange(0,3);
+      //  passwordRef.current?.setSelectionRange(0,);
         window.navigator.clipboard.writeText(password)
      }, [password])
-
+ 
      useEffect(() =>{
        passwordGenerator()
      }, [length, numberAllowed, charAllowed, passwordGenerator])
 
   return (
     <>
-      <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8 text-orange-500 bg-gray-700'>
+      <div className='w-full max-w-md mx-auto shadow-md rounded-lg  p-10 my-8 text-orange-500 bg-gray-700'>
          <h1 className='text-white text-center font-weight font-bold my-5'>passwordGenerator</h1>
        <div className='flex shadow rounded-lg overflow-hidden mb-4 '>
         <input type="text"
@@ -46,7 +45,7 @@ function App() {
            className='outline-none w-full py-1 '
             placeholder='password'
             readOnly
-            rel={passwordRef}
+            ref={passwordRef}
         />
          <button 
            onClick={copyPasswordtoClipboard}
